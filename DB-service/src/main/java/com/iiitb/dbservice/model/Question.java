@@ -18,11 +18,12 @@ import javax.persistence.*;
 public class Question {
     @Id
     @Column
-
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int QID;
     @Column
     private String Question;
+    @Column
+    private  String questionType;
     @Column
     private int version;
     @Column

@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @Component
 @RequiredArgsConstructor
@@ -14,18 +16,57 @@ public class QuestionService{
 
     @Autowired
     private final QuestionRepository questionRepository;
+
     @Autowired
-    public void modifyQuestion(Question question){
-        questionRepository.save(question);
+    public Boolean modifyQuestion(Question question){
+//        System.out.println("ASKED TO MODIFY "+question.getQID());
+        if(questionRepository.existsById(question.getQID())) {
+//            deleteQuestionById(question.getQID());
+            questionRepository.modify(question.getQID()
+                    ,question.getQuestionType()
+                    ,question.getQuestion()
+                    ,question.getAnswer()
+                    ,question.getVersion()
+                    ,question.getCorrectOption()
+                    ,question.getOption1()
+                    ,question.getOption2()
+                    ,question.getOption3()
+                    ,question.getOption4()
+                    ,question.getUser_id());
+            return true;
+        }
+        return false;
     }
 
     @Autowired
-    public void addQuestion(Question question) {
-        questionRepository.save(question);
+    public Boolean addQuestion(Question question) {
+        if(questionRepository.save(question)!= null)return true;
+        return false;
     }
 
     @Autowired
-    public void deleteQuestion(Question question){
-        questionRepository.deleteById(question.getQID());
+    public Boolean deleteQuestion(Question question){
+//        questionRepository.deleteById(question.getQID());
+        return deleteQuestionById(question.getQID());
+    }
+
+    public Boolean deleteQuestionById(Integer qid) {
+        List<Question> ql = questionRepository.findAll();
+        for ( Question q :ql){
+            if(q.getQuestion()==null){
+                questionRepository.delete(q);
+                continue;
+            }
+            if(q.getQID()==qid){
+                questionRepository.delete(q);
+                return true;
+            }
+        }
+//        questionRepository.deleteById(qid);
+        return false;
+    }
+
+    public List<Question> getAllQuestions() {
+        return questionRepository.findAll();
     }
 }
