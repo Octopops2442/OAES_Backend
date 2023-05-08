@@ -40,7 +40,9 @@ public class QuestionService{
 
     @Autowired
     public Boolean addQuestion(Question question) {
-        if(questionRepository.save(question)!= null)return true;
+        Question q = questionRepository.save(question);
+        System.out.println("SAVED QUESTION WITH QID:"+q.getQID());
+        if(q != null)return true;
         return false;
     }
 
