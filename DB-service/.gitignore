@@ -17,7 +17,8 @@ DB-service/src/main/resources/application.properties
 .idea
 *.iws
 *.iml
-*.ipr
+*.ipr 
+
 
 ### NetBeans ###
 /nbproject/private/
